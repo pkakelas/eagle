@@ -1,11 +1,11 @@
 {
-    "BTC": 0,
-    "DCR": 0,
-    "XMR": 0,
-    "ETH": 0,
-    "NAS": 0,
-    "DOGE": 0,
-    "LTC": 0,
-    "EAC": 0,
-    "SLL": 0,
+    "BTC": {"balance": 0, "address": "Delete balance if you add an address."},
+    "DCR": {"balance": 0},
+    "XMR": {"balance": 0},
+    "ETH": {"balance": 0},
+    "NAS": {"balance": 0},
+    "DOGE": {"balance": 0},
+    "LTC": {"balance": 0},
+    "EAC": {"balance": 0},
+    "SLL": {"balance": 0}
 }

@@ -1,3 +1,4 @@
+from __future__ import division
 import urllib2, json, os.path
 import json
 
@@ -8,16 +9,21 @@ else:
 
 currencies = json.load(config_file)
 
-if currencies['BTC'] is not None:
-    price = currencies['BTC']
-else:
-    price = 0
+try:
+    price = currencies['BTC']['balance']
+except:
+    try:
+        html = urllib2.urlopen('https://blockchain.info/q/addressbalance/' + currencies['BTC']['address'])
+        price = int(html.read()) /  pow(10, 8) #satoshi to BTC convertion
+    except:
+        price = 0
 
 for currency in currencies.keys():
     if currency != 'BTC':
         html = urllib2.urlopen('https://bittrex.com/api/v1.1/public/getticker?market=BTC-' + currency)
         res = json.loads(html.read())['result']
-        price += res['Bid'] * currencies[currency]
+        price += res['Bid'] * currencies[currency]['balance']
+
 
 res = urllib2.urlopen('https://blockchain.info/ticker')
 lastPrice = json.loads(res.read())['EUR']['last']
