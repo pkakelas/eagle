@@ -9,7 +9,8 @@ if os.path.exists('config/config-local.json'):
     config = json.load(config_file)
 else:
     print 'Please copy the config.json file to config-local.json and fill in the file.'
-logging.basicConfig(filename='eagle.log',level=logging.DEBUG)
+
+logging.basicConfig(filename='.eagle.log',level=logging.DEBUG)
 
 
 logging.info(time.strftime("%x") + ": eagle woke up")
