@@ -1,4 +1,5 @@
 {
+  "currencies": {
     "BTC": {"balance": 0, "address": "Delete balance if you add an address."},
     "DCR": {"balance": 0},
     "XMR": {"balance": 0},
@@ -8,4 +9,7 @@
     "LTC": {"balance": 0},
     "EAC": {"balance": 0},
     "SLL": {"balance": 0}
+  },
+  "myMail": "",
+  "myName": ""
 }
