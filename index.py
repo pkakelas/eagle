@@ -30,19 +30,24 @@ try:
     price = config['currencies']['BTC']['balance']
 except:
     try:
-        html = urllib2.urlopen('https://blockchain.info/q/addressbalance/' + config['currencies']['BTC']['address'])
+        html = request.urlopen('https://blockchain.info/q/addressbalance/' + config['currencies']['BTC']['address'])
         price = int(html.read()) /  pow(10, 8) #satoshi to BTC convertion
     except:
         price = 0
 
 for currency in config['currencies'].keys():
     if currency != 'BTC':
-        html = urllib2.urlopen('https://bittrex.com/api/v1.1/public/getticker?market=BTC-' + currency)
+        html = request.urlopen('https://bittrex.com/api/v1.1/public/getticker?market=BTC-' + currency)
         res = json.loads(html.read())['result']
+
+        if res == None:
+            print("Price for coin", currency,  "cannot be fetched")
+            continue
+
         price += res['Bid'] * config['currencies'][currency]['balance']
 
 
-res = urllib2.urlopen('https://blockchain.info/ticker')
+res = request.urlopen('https://blockchain.info/ticker')
 lastPrice = json.loads(res.read())['EUR']['last']
 
 print("Total bitcoins if converted: " + str(price) + " BTC.\r\nThis equals to " + str(price * lastPrice) + " euro.")
