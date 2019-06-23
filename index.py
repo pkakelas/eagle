@@ -1,19 +1,16 @@
 from __future__ import division
-import urllib2, json, os.path
+import urllib.request as request, json, os.path
 import json, time
 import requests
-import logging
 
 if os.path.exists('config/config-local.json'):
     config_file = open('config/config-local.json')
     config = json.load(config_file)
 else:
-    print 'Please copy the config.json file to config-local.json and fill in the file.'
+    print('Please copy the config.json file to config-local.json and fill in the file.')
+    exit()
 
-logging.basicConfig(filename='.eagle.log',level=logging.DEBUG)
-
-
-logging.info(time.strftime("%x") + ": eagle woke up")
+print(time.strftime("%x") + ": Eagle woke up")
 
 def sendMail(amount, lastPrice):
     r = requests.post(
@@ -28,8 +25,6 @@ def sendMail(amount, lastPrice):
         return True
     else:
         return False
-
-
 
 try:
     price = config['currencies']['BTC']['balance']
@@ -50,9 +45,9 @@ for currency in config['currencies'].keys():
 res = urllib2.urlopen('https://blockchain.info/ticker')
 lastPrice = json.loads(res.read())['EUR']['last']
 
-logging.info("Total bitcoins if converted: " + str(price) + " BTC.\r\nThis equals to " + str(price * lastPrice) + " euro.")
+print("Total bitcoins if converted: " + str(price) + " BTC.\r\nThis equals to " + str(price * lastPrice) + " euro.")
 
 if (sendMail(price, lastPrice)):
-    logging.info("Email sent")
+    print("Email sent")
 else:
-    logging.error("An error occured on email send")
+    print("An error occured on email send")
