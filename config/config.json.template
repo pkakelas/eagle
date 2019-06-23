@@ -1,6 +1,6 @@
 {
   "currencies": {
-    "BTC": {"balance": 0, "address": "Delete balance if you add an address."},
+    "BTC": {"balance": 0},
     "DCR": {"balance": 0},
     "XMR": {"balance": 0},
     "ETH": {"balance": 0},
@@ -10,7 +10,5 @@
     "EAC": {"balance": 0},
     "SLL": {"balance": 0}
   },
-  "myMail": "",
-  "myName": "",
   "coinlayer": "74f80ffe87ad74d71800c05f48e3b322"
 }
