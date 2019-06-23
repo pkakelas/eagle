@@ -3,8 +3,8 @@ import urllib.request as request, json, os.path
 import json, time
 import requests
 
-if os.path.exists('config/config-local.json'):
-    config_file = open('config/config-local.json')
+if os.path.exists('config/config.json'):
+    config_file = open('config/config.json')
     config = json.load(config_file)
 else:
     print('Please copy the config.json file to config-local.json and fill in the file.')
@@ -26,17 +26,12 @@ def sendMail(amount, lastPrice):
     else:
         return False
 
-try:
-    price = config['currencies']['BTC']['balance']
-except:
-    try:
-        html = request.urlopen('https://blockchain.info/q/addressbalance/' + config['currencies']['BTC']['address'])
-        price = int(html.read()) /  pow(10, 8) #satoshi to BTC convertion
-    except:
-        price = 0
+price = 0
 
 for currency in config['currencies'].keys():
-    if currency != 'BTC':
+    if currency == 'BTC':
+        price += config['currencies'][currency]['balance']
+    else:
         html = request.urlopen('https://bittrex.com/api/v1.1/public/getticker?market=BTC-' + currency)
         res = json.loads(html.read())['result']
 
