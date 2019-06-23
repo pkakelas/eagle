@@ -35,7 +35,6 @@ url = "http://api.coinlayer.com/api/live?access_key=" + config['coinlayer'] + "&
 
 with request.urlopen(url) as response:
    rates = json.loads(response.read().decode('utf-8')).get('rates')
-   print(rates)
 
    for currency in config['currencies'].keys():
        lastPrice = rates.get(currency)
