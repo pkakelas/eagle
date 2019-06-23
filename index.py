@@ -46,7 +46,7 @@ with request.urlopen(url) as response:
 
        total_volume += lastPrice * config['currencies'][currency]['balance']
 
-print("Total euros if converted: " + str(total_volume) + " eur")
+print("Total euros : " + str(total_volume) + " eur")
 
 if (sendMail(total_volume, lastPrice)):
     print("Email sent")
