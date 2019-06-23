@@ -33,10 +33,10 @@ symbols = ','.join(config['currencies'])
 url = "http://api.coinlayer.com/api/live?access_key=" + config['coinlayer'] + "&target=EUR&symbols=" + symbols
 
 with request.urlopen(url) as response:
-   rates = json.loads(response.read().decode('utf-8')).get('rates')
+   rates = json.loads(response.read().decode('utf-8'))['rates']
 
    for currency in config['currencies'].keys():
-       lastPrice = rates.get(currency)
+       lastPrice = rates[currency]
 
        if lastPrice == None:
            print("This cryptocurrency does not exist")
