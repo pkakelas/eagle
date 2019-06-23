@@ -32,21 +32,21 @@ total_volume = 0
 lastPrice = 0
 symbols = ','.join(config['currencies'])
 url = "http://api.coinlayer.com/api/live?access_key=" + config['coinlayer'] + "&target=EUR&symbols=" + symbols
+
 with request.urlopen(url) as response:
    rates = json.loads(response.read().decode('utf-8')).get('rates')
    print(rates)
+
    for currency in config['currencies'].keys():
        lastPrice = rates.get(currency)
+
        if lastPrice == None:
-           print("this cryptocurrency does not exist")
+           print("This cryptocurrency does not exist")
            continue
 
        total_volume += lastPrice * config['currencies'][currency]['balance']
 
-##res = request.urlopen('https://blockchain.info/ticker')
-##lastPrice = json.loads(res.read())['EUR']['last']
-
-print("Total euros if converted: " + str(total_volume) + " $.\r\n")
+print("Total euros if converted: " + str(total_volume) + " eur")
 
 if (sendMail(total_volume, lastPrice)):
     print("Email sent")
