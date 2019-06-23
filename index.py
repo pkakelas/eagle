@@ -12,8 +12,8 @@ else:
 
 print(time.strftime("%x") + ": Eagle woke up")
 
-def sendMail(amount, lastPrice):
-
+def sendMail(amount):
+    """
     r = request.post(
         "https://api.mailgun.net/v3/sandboxb0290be0c6374214b94158e8986a61b2.mailgun.org/messages",
         auth=("api", "key-7f1ccf639b43e107cda773f9eec84ea5"),
@@ -26,9 +26,9 @@ def sendMail(amount, lastPrice):
         return True
     else:
         return False
+    """
 
 total_volume = 0
-lastPrice = 0
 symbols = ','.join(config['currencies'])
 url = "http://api.coinlayer.com/api/live?access_key=" + config['coinlayer'] + "&target=EUR&symbols=" + symbols
 
@@ -36,17 +36,15 @@ with request.urlopen(url) as response:
    rates = json.loads(response.read().decode('utf-8'))['rates']
 
    for currency in config['currencies'].keys():
-       lastPrice = rates[currency]
-
-       if lastPrice == None:
-           print("This cryptocurrency does not exist")
+       if currency not in rates:
+           print("Cryptocurrency", currency, "does not exist.")
            continue
 
-       total_volume += lastPrice * config['currencies'][currency]['balance']
+       total_volume += rates[currency] * config['currencies'][currency]['balance']
 
 print("Total euro : " + str(total_volume) + " eur")
 
-if (sendMail(total_volume, lastPrice)):
+if (sendMail(total_volume)):
     print("Email sent")
 else:
     print("An error occured on email send")
