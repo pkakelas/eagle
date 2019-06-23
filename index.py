@@ -1,7 +1,7 @@
 from __future__ import division
 import urllib.request as request, json, os.path
 import json, time
-import requests
+
 
 if os.path.exists('config/config.json'):
     config_file = open('config/config.json')
@@ -13,7 +13,8 @@ else:
 print(time.strftime("%x") + ": Eagle woke up")
 
 def sendMail(amount, lastPrice):
-    r = requests.post(
+
+    r = request.post(
         "https://api.mailgun.net/v3/sandboxb0290be0c6374214b94158e8986a61b2.mailgun.org/messages",
         auth=("api", "key-7f1ccf639b43e107cda773f9eec84ea5"),
         data={"from": "Eagle <postmaster@sandboxb0290be0c6374214b94158e8986a61b2.mailgun.org>",
@@ -26,28 +27,26 @@ def sendMail(amount, lastPrice):
     else:
         return False
 
-price = 0
+total_volume = 0
+lastPrice = 0
+symbols = ','.join(config['currencies'])
+url = "http://api.coinlayer.com/api/live?access_key=" + config['coinlayer'] + "&target=EUR&symbols=" + symbols
 
-for currency in config['currencies'].keys():
-    if currency == 'BTC':
-        price += config['currencies'][currency]['balance']
-    else:
-        html = request.urlopen('https://bittrex.com/api/v1.1/public/getticker?market=BTC-' + currency)
-        res = json.loads(html.read())['result']
+with request.urlopen(url) as response:
+   rates = json.loads(response.read().decode('utf-8'))['rates']
 
-        if res == None:
-            print("Price for coin", currency,  "cannot be fetched")
-            continue
+   for currency in config['currencies'].keys():
+       lastPrice = rates[currency]
 
-        price += res['Bid'] * config['currencies'][currency]['balance']
+       if lastPrice == None:
+           print("This cryptocurrency does not exist")
+           continue
 
+       total_volume += lastPrice * config['currencies'][currency]['balance']
 
-res = request.urlopen('https://blockchain.info/ticker')
-lastPrice = json.loads(res.read())['EUR']['last']
+print("Total euro : " + str(total_volume) + " eur")
 
-print("Total bitcoins if converted: " + str(price) + " BTC.\r\nThis equals to " + str(price * lastPrice) + " euro.")
-
-if (sendMail(price, lastPrice)):
+if (sendMail(total_volume, lastPrice)):
     print("Email sent")
 else:
     print("An error occured on email send")
