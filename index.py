@@ -13,7 +13,7 @@ else:
 print(time.strftime("%x") + ": Eagle woke up")
 
 def sendMail(amount, lastPrice):
-    """
+
     r = request.post(
         "https://api.mailgun.net/v3/sandboxb0290be0c6374214b94158e8986a61b2.mailgun.org/messages",
         auth=("api", "key-7f1ccf639b43e107cda773f9eec84ea5"),
@@ -26,7 +26,6 @@ def sendMail(amount, lastPrice):
         return True
     else:
         return False
-    """
 
 total_volume = 0
 lastPrice = 0
@@ -45,7 +44,7 @@ with request.urlopen(url) as response:
 
        total_volume += lastPrice * config['currencies'][currency]['balance']
 
-print("Total euros : " + str(total_volume) + " eur")
+print("Total euro : " + str(total_volume) + " eur")
 
 if (sendMail(total_volume, lastPrice)):
     print("Email sent")
