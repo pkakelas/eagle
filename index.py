@@ -7,7 +7,7 @@ if os.path.exists('config/config.json'):
     config_file = open('config/config.json')
     config = json.load(config_file)
 else:
-    print('Please copy the config.json file to config-local.json and fill in the file.')
+    print('Please copy the config.json.template file to config.json and fill in the file.')
     exit()
 
 print(time.strftime("%x") + ": Eagle woke up")
